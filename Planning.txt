@@ -1,0 +1,21 @@
+What are the needs / plan for this program:
+
+    - I want this program to make sure mounts are mounted on my linux servers. (AntonlabsNASPro)
+
+    - Then, if the mounts are not mounted, 
+      - pause the proper container running the downloader, 
+      - take all files located at /mnt/NASMedia/* (media server file locations) and put them into a temporary directory to be copied back into the NASMedia folder. 
+
+    - Remount using the "mount -a" command, (mount -a | grep "/mnt/NASMedia")
+
+    - Copy files from the temp directory back into the location they were at before. 
+
+Explanation: 
+
+    When I'm legally aquiring files (not through torrenting at all for the record), sometimes files will actively save to the directory they're originally meant to be at. 
+    But when I remount using mount -a, it causes "mount shadowing" which means those original files being "downloaded" will continue downloading, but to the wrong place. 
+    
+    This program aims to solve that issue. 
+
+    I will have this program run in the backround and scan for the mounts not being available, once it detects they're not available, 
+    it will trigger the rest of the functionality listed above. 
