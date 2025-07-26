@@ -40,11 +40,11 @@ public class Mountpoint {
     public static List<String> extractMountPoints(String mountOutput) {
         List<String> mountPoints = new ArrayList<>();
 
-        Pattern pattern = Pattern.compile("^//\\d{1,3}(\\.\\d{1,3}){3}/\\S+$\r\n");
+        Pattern pattern = Pattern.compile("//\\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\\b/[A-Za-z]+");
         Matcher matcher = pattern.matcher(mountOutput);
 
         while (matcher.find()) {
-            mountPoints.add(matcher.group(1));
+            mountPoints.add(matcher.group(0));
         }
         
         return mountPoints;
