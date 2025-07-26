@@ -3,13 +3,18 @@ package com.loganv308;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class FileOperation {
+public class MountScanner {
 
     private static Process p;
+    private static final Pattern pattern = Pattern.compile("//((?:\\d{1,3}\\.){3}\\d{1,3})(/\\w+)");
 
     // Work on regexing the file paths to pass into another method which will remount the mounts. 
-    public static String checkForMounts() {
+    public String checkForMounts() {
         // String array containing command to be executed by Runtime.getRuntime().exec()
         String[] s = {"/bin/sh", "-c", "mount | grep //192.168.1.69/"};
 
@@ -61,5 +66,21 @@ public class FileOperation {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Mountpoint> extractMountPoints(String mountOutput) {
+        List<Mountpoint> mountPoints = new ArrayList<>();
+
+        Matcher matcher = pattern.matcher(mountOutput);
+
+        while (matcher.find()) {
+            String mountSource = matcher.group(1); // Server Path 
+            String serverPath = matcher.group(2); // MountSource (Network Share)
+
+            Mountpoint mountPoint = new Mountpoint(serverPath, mountSource);
+            mountPoints.add(mountPoint);
+        }
+        
+        return mountPoints;
     }
 }

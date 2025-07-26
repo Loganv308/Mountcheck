@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Main {
 
-    private static final FileOperation fileOperation = new FileOperation();
+    private static final MountScanner fileOperation = new MountScanner();
 
     public static void main(String[] args) {
 
@@ -13,12 +13,12 @@ public class Main {
 
                 String mounts = fileOperation.checkForMounts();
 
-                System.out.println(mounts);
+                List<Mountpoint> matchMounts = fileOperation.extractMountPoints(mounts);
 
-                List<String> matchMounts = Mountpoint.extractMountPoints(mounts);
+                for (Mountpoint match : matchMounts) {
 
-                for (String match : matchMounts) {
                     System.out.println(match);
+
                 }
 
                 Thread.sleep(10000);
