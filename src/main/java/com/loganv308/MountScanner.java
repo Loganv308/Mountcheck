@@ -11,7 +11,8 @@ import java.util.regex.Pattern;
 public class MountScanner {
 
     private static Process p;
-    private static final Pattern pattern = Pattern.compile("//((?:\\d{1,3}\\.){3}\\d{1,3})(/\\w+)");
+    private static final Pattern regPattern = Pattern.compile("//((?:\\d{1,3}\\.){3}\\d{1,3})(/\\w+)");
+    private static final List<Mountpoint> mountPoints = new ArrayList<>();
 
     // Work on regexing the file paths to pass into another method which will remount the mounts. 
     public String checkForMounts() {
@@ -69,18 +70,22 @@ public class MountScanner {
     }
 
     public List<Mountpoint> extractMountPoints(String mountOutput) {
-        List<Mountpoint> mountPoints = new ArrayList<>();
-
-        Matcher matcher = pattern.matcher(mountOutput);
+        Matcher matcher = regPattern.matcher(mountOutput);
 
         while (matcher.find()) {
             String mountSource = matcher.group(1); // Server Path 
             String serverPath = matcher.group(2); // MountSource (Network Share)
 
             Mountpoint mountPoint = new Mountpoint(serverPath, mountSource);
+            
             mountPoints.add(mountPoint);
         }
         
         return mountPoints;
+    }
+
+    // Implement
+    public List<Media> extractMedia() {
+        return null;
     }
 }

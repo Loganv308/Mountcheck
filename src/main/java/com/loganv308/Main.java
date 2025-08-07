@@ -15,6 +15,10 @@ public class Main {
 
                 List<Mountpoint> matchMounts = fileOperation.extractMountPoints(mounts);
 
+                if(matchMounts.isEmpty()) {
+                    System.out.println("Mounts not found.");
+                }
+
                 for (Mountpoint match : matchMounts) {
 
                     System.out.println(match);
