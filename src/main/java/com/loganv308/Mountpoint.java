@@ -5,7 +5,7 @@ public class Mountpoint {
     // Path on the Server the mount is mounted too 
     private String mountPath;
     
-    // What the mountPath is pointed too: //192.168.1.96/<path> 
+    // What the mountPath is pointed too: //192.168.1.69/<path> 
     private String serverPath;
 
     public Mountpoint(String mountPath, String serverPath) {

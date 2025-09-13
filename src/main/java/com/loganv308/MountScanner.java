@@ -29,13 +29,11 @@ public class MountScanner {
 
             String line;
 
-            System.out.println("--- Standard Output ---");
             while ((line = stdOut.readLine()) != null) {
                 output.append(line).append("\n");
             }
 
             p.waitFor();
-            System.out.println ("exit code: " + p.exitValue());
             p.destroy();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -44,10 +42,12 @@ public class MountScanner {
         return output.toString();
     }
 
+    // This method will remount all all mounts based on the /etc/fstab file
     public void remount() {
-        // This command will re-mount all mounts based on the /etc/fstab file
+        // String array containing the command
         String[] s = {"/bin/sh", "-c", "mount -a"};
 
+        // Try...catch to get any errors
         try {
             // Execution of runtime command
             p = Runtime.getRuntime().exec(s);
@@ -62,7 +62,6 @@ public class MountScanner {
             }
 
             p.waitFor();
-            System.out.println ("exit code: " + p.exitValue());
             p.destroy();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -73,10 +72,12 @@ public class MountScanner {
         Matcher matcher = regPattern.matcher(mountOutput);
 
         while (matcher.find()) {
-            String mountSource = matcher.group(1); // Server Path 
-            String serverPath = matcher.group(2); // MountSource (Network Share)
+            String serverPath = matcher.group(1); // Server Path 
+            String mountSource = matcher.group(2); // MountSource (Network Share)
 
-            Mountpoint mountPoint = new Mountpoint(serverPath, mountSource);
+            String formattedPath = "//" + serverPath + "/";
+
+            Mountpoint mountPoint = new Mountpoint(formattedPath, mountSource);
             
             mountPoints.add(mountPoint);
         }
